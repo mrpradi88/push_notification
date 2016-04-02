@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<title>Push Notification Server
+		</title>
+	</head>
+<body>
+	<h1>Hi welcome to HTML </h1>
+<form action="/subscribe" method="POST" id="form1">
+	<div>
+		<label>Gender:</label>
+		<input type="textbox" name="custom_parameter_gender">
+	</div>
+<div>
+		<label>Age:</label>
+		<input  type="textbox" name="custom_parameter_age">
+	</div>
+
+	<div>
+		
+		<input id="subid" type="hidden" name="subscriber_id">
+	</div>
+	<div>
+		
+		<button type="submit" form="form1" value="Submit">Submit</button>
+	</div>
+<script type="text/javascript">
+	(function(){
+function guid() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
+}
+document.getElementById("subid").value = guid();
+
+	})()
+	
+</script>
+</body>
+</html>

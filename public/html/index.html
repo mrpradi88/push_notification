@@ -1,0 +1,94 @@
+<html>
+	<head>
+		<title>Push Notification Server
+		</title>
+		<link rel="manifest" href="manifest.json">
+	</head>
+<body>
+	<h1>Hi welcome to Push Notification Server. </h1>
+
+	<div>
+		<label>Gender:</label>
+		<input id="gender"type="textbox" name="custom_parameter_gender">
+	</div>
+<div>
+		<label>Age:</label>
+		<input id="age" type="textbox" name="custom_parameter_age">
+	</div>
+
+	<div>
+		
+		<input id="subid" type="hidden" name="subscriber_id">
+	</div>
+	<div>
+	<label>SiteID</label>
+	 <select name="channel" id="channel">
+  <option value="100">100</option>
+  <option value="200">200</option>
+  <option value="300">300</option>
+  <option value="400">400</option>
+</select>
+	</div>
+	<div>
+		
+		<button id="submitbutton" onclick="pushnotify()"  >Submit</button>
+	</div>
+	
+<script type="text/javascript">
+	
+function guid() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
+}
+var params = "";
+function submit(){
+var e = document.getElementById("channel");
+var channel = e.options[e.selectedIndex].value;
+var http = new XMLHttpRequest();
+var url = "/subscribe";
+params = "custom_parameter_gender="+document.getElementById("gender").value+"&custom_parameter_age="+document.getElementById("age").value+"&siteid="+channel+"&subscriber_id="+guid();
+http.open("POST", url, true);
+
+
+http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+http.setRequestHeader("Content-length", params.length);
+http.setRequestHeader("Connection", "close");
+
+http.onreadystatechange = function() {
+    if(http.readyState == 4 && http.status == 200) {
+        alert(http.responseText);
+    }
+}
+
+http.send(params);
+}
+function pushnotify(){
+	
+'use strict';
+
+if ('serviceWorker' in navigator) {
+  console.log('Service Worker is supported');
+  navigator.serviceWorker.register('sw.js').then(function() {
+    return navigator.serviceWorker.ready;
+  }).then(function(reg) {
+    reg.pushManager.subscribe({userVisibleOnly: true}).then(function(sub) {
+    	params = params+"&endpoint="+sub.endpoint;
+      console.log('endpoint:', sub.endpoint);
+    });
+  }).catch(function(error) {
+    console.log('Service Worker error :^(', error);
+  });
+}
+}
+
+	
+	
+</script>
+</body>
+</html>
